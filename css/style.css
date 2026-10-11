@@ -1,6 +1,6 @@
 /* =============================================================================
  * CO1 Quiz Assessment Portal — style.css
- * SIMATS Engineering · Department of Pure and Applied Mathematics
+ * SIMATS Engineering · Department of Mathematics
  * Pure CSS (no framework) — responsive, desktop-first, print-friendly
  * ========================================================================== */
 
@@ -418,20 +418,25 @@ details summary { cursor: pointer; font-weight: 600; color: var(--navy-700); }
 }
 
 /* ---------- Math formatting (powers, subscripts, fractions, matrices) ---------- */
+:root { --math-font: 'Cambria Math', Cambria, 'STIX Two Math', 'STIX Two Text', 'Latin Modern Math', 'Times New Roman', Times, serif; }
+var { font-family: var(--math-font); font-style: italic; font-size: 1.12em; padding: 0 .04em; }
 sup, sub { font-size: .72em; line-height: 0; }
+sup var, sub var { font-size: 1.05em; }
 sup sub, sub sup, sup sup, sub sub { font-size: .85em; }
-.frac { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; font-size: .92em; margin: 0 3px; line-height: 1.25; }
-.frac > .num { border-bottom: 1.5px solid currentColor; padding: 0 3px 1px; }
-.frac > .den { padding: 1px 3px 0; }
-.sqrt { white-space: nowrap; }
-.sqrt-in { border-top: 1.5px solid currentColor; padding: 0 2px; margin-left: 1px; }
-.mx { display: inline-flex; align-items: stretch; vertical-align: middle; margin: 4px 4px; line-height: 1.35; }
-.mx::before, .mx::after { content: ''; width: 6px; border: 2px solid currentColor; }
-.mx::before { border-right: none; border-radius: 7px 0 0 7px; }
-.mx::after { border-left: none; border-radius: 0 7px 7px 0; }
-.mx-in { display: inline-table; padding: 2px 2px; }
+.frac, .mx, .sqrt { font-family: var(--math-font); }
+.frac { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; font-size: 1em; margin: 0 3px; line-height: 1.2; }
+.frac > .num { border-bottom: 1.3px solid currentColor; padding: 0 4px 2px; }
+.frac > .den { padding: 2px 4px 0; }
+.frac var { font-size: 1.05em; }
+.sqrt { white-space: nowrap; font-size: 1.05em; }
+.sqrt-in { border-top: 1.3px solid currentColor; padding: 0 2px; margin-left: 1px; }
+.mx { display: inline-flex; align-items: stretch; vertical-align: middle; margin: 4px 4px; line-height: 1.4; font-size: 1.05em; }
+.mx::before, .mx::after { content: ''; width: 5px; border: 1.6px solid currentColor; }
+.mx::before { border-right: none; }
+.mx::after { border-left: none; }
+.mx-in { display: inline-table; padding: 2px 3px; }
 .mx-row { display: table-row; }
-.mx-c { display: table-cell; padding: 1px 8px; text-align: right; font-variant-numeric: tabular-nums; }
+.mx-c { display: table-cell; padding: 1px 8px; text-align: center; font-variant-numeric: tabular-nums; }
 .q-text { line-height: 1.9; }
 .option .opt-text { line-height: 1.7; }
 

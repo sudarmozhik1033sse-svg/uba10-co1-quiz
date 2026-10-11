@@ -1,6 +1,6 @@
 /* =============================================================================
  * CO1 Quiz Assessment Portal — app.js
- * SIMATS Engineering · Department of Pure and Applied Mathematics
+ * SIMATS Engineering · Department of Mathematics
  *
  * Shared foundation used by every page:
  *   1. Namespace + storage keys
@@ -45,7 +45,7 @@
     sessionLabel: SITE.SESSION_LABEL || 'MS2 · SEP – DEC 2026',
     courseName: 'UBA10 – Numerical Methods',
     institution: 'SIMATS Engineering',
-    department: 'Department of Pure and Applied Mathematics',
+    department: 'Department of Mathematics',
     courseCode: 'UBA10',            // pre-fills the registration form
     facultyName: '',                // pre-fills the registration form when set
     enforceCourseCode: true,        // if true, the student must enter exactly this course code
@@ -133,6 +133,7 @@
       const c = Object.assign({}, CO1.DEFAULT_CONFIG, CO1.storage.get(CO1.KEYS.CONFIG, {}));
       if (!c.remoteEndpoint) c.remoteEndpoint = SITE.RESULTS_ENDPOINT || '';
       if (!c.sessionLabel) c.sessionLabel = CO1.DEFAULT_CONFIG.sessionLabel;
+      if (!c.department || /pure\s*(and|&)\s*applied/i.test(c.department)) c.department = CO1.DEFAULT_CONFIG.department;
       return c;
     },
     async saveConfig(cfg) {
@@ -443,6 +444,16 @@
   const SUB = { '0': '₀', '1': '₁', '2': '₂', '3': '₃', '4': '₄', '5': '₅', '6': '₆', '7': '₇', '8': '₈', '9': '₉', '+': '₊', '−': '₋', '-': '₋', 'n': 'ₙ', 'x': 'ₓ', 's': 'ₛ', '(': '₍', ')': '₎' };
   const mapAll = (str, table) => ([...str].every((c) => table[c]) ? [...str].map((c) => table[c]).join('') : null);
 
+  /* italicise single-letter variables; skip articles ("a student", "A structural …")
+     and letters that follow an HTML entity (e.g. the s in student&#39;s) */
+  function italicVars(text) {
+    return text.replace(/(^|[^A-Za-z\u03B1-\u03C9;\\])([A-Za-z\u03B1-\u03C9])(?![A-Za-z\u03B1-\u03C9])/g, (m, pre, ch, off, str) => {
+      const after = str.slice(off + m.length);
+      if (/^[aAI]$/.test(ch) && /^ [a-z]{2,}/.test(after)) return m; // article / pronoun
+      return `${pre}<var>${ch}</var>`;
+    });
+  }
+
   CO1.math = {
     /** markup → safe HTML */
     html(src) {
@@ -461,6 +472,9 @@
           .replace(/\\sqrt\{([^{}]*)\}/g, '<span class="sqrt">√<span class="sqrt-in">$1</span></span>')
           .replace(/\\frac\{([^{}]*)\}\{([^{}]*)\}/g, '<span class="frac"><span class="num">$1</span><span class="den">$2</span></span>');
       } while (s !== prev);
+      // Textbook look: single-letter variables (x, y, f, A, λ, φ…) in italic serif,
+      // function names (sin, cos, log, ln…) stay upright. Text inside HTML tags is untouched.
+      s = s.replace(/(<[^>]*>)|([^<]+)/g, (m, tag, text) => (tag ? tag : italicVars(text)));
       return s.replace(/\n/g, '<br>');
     },
     /** markup → readable plain text (Excel, CSV) */
