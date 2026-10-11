@@ -70,7 +70,7 @@
     remoteEndpoint: '',             // per-browser override; normally set once in js/site-config.js
     facultyPinHash: ''              // empty = the built-in faculty password (stored only as a hash)
   };
-  CO1.DEFAULT_PIN_HASH = 'spbqcl4p1f';
+  CO1.DEFAULT_PIN_HASH = '1by2r4kre5c';
 
   /* ---------------------------------------------------------------------------
    * 3. SAFE STORAGE WRAPPER
