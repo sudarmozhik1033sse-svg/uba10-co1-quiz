@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Result · CO1 Quiz Portal · SIMATS Engineering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="portal-header">
+    <div class="inner">
+      <div class="brand-logo">
+        <img class="inst-logo" src="img/simats-logo.png" alt="SIMATS Engineering" onload="this.parentNode.classList.add('has-logo')" onerror="this.remove()">
+        <div class="emblem" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><path fill="#1f3864" d="M16 4 1 11l15 7 12-5.6V20h2v-8.6L31 11z"/><path fill="#8b1e3f" d="M7 15.2V21c0 2.5 4 4.5 9 4.5s9-2 9-4.5v-5.8l-9 4.2z"/><circle cx="29" cy="22" r="1.6" fill="#c9a227"/></svg></div>
+      </div>
+      <div class="brand-text">
+        <div class="inst" data-config="institution">SIMATS Engineering</div>
+        <div class="dept" data-config="department">Department of Pure and Applied Mathematics</div>
+      </div>
+      <div class="spacer"></div>
+      <a class="header-link" href="index.html">Home</a>
+    </div>
+  </header>
+  <main class="page narrow" id="resultApp">
+    <p class="muted">Loading result…</p>
+  </main>
+  <footer class="portal-footer">
+    © SIMATS Engineering · Department of Pure and Applied Mathematics · CO1 Online Assessment Portal
+  </footer>
+  <script src="js/site-config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/questions.js"></script>
+  <script src="js/malpractice.js"></script>
+  <script src="js/results.js"></script>
+
+  <script>
+    /* Shown only if the page was opened without its js/css folders (e.g. straight from a zip or WhatsApp) */
+    if (!window.CO1) document.body.innerHTML = '<div style="font-family:Arial,sans-serif;max-width:640px;margin:60px auto;padding:24px 28px;border:2px solid #c0392b;border-radius:12px;line-height:1.6"><h2 style="color:#c0392b;margin-top:0">Quiz files not found</h2><p>This page was opened <b>without its supporting files</b>, so the quiz cannot start.</p><ol><li>If you received a <b>zip file</b>: right-click it → <b>Extract All</b>, then open <b>index.html</b> from the extracted <b>quiz-app</b> folder (do not open it from inside the zip).</li><li>If you received a <b>link</b>: open the link in Google Chrome instead of a downloaded file.</li></ol></div>';
+  </script>
+</body>
+</html>

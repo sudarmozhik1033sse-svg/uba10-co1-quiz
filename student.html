@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Registration · CO1 Quiz Portal · SIMATS Engineering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="portal-header">
+    <div class="inner">
+      <div class="brand-logo">
+        <img class="inst-logo" src="img/simats-logo.png" alt="SIMATS Engineering" onload="this.parentNode.classList.add('has-logo')" onerror="this.remove()">
+        <div class="emblem" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><path fill="#1f3864" d="M16 4 1 11l15 7 12-5.6V20h2v-8.6L31 11z"/><path fill="#8b1e3f" d="M7 15.2V21c0 2.5 4 4.5 9 4.5s9-2 9-4.5v-5.8l-9 4.2z"/><circle cx="29" cy="22" r="1.6" fill="#c9a227"/></svg></div>
+      </div>
+      <div class="brand-text">
+        <div class="inst" data-config="institution">SIMATS Engineering</div>
+        <div class="dept" data-config="department">Department of Pure and Applied Mathematics</div>
+      </div>
+      <div class="spacer"></div>
+      <a class="header-link" href="index.html">Home</a>
+    </div>
+  </header>
+  <main class="page narrow">
+    <!-- STEP 1: REGISTRATION -->
+    <section id="regStep">
+      <div class="steps"><div class="step active"><span class="n">1</span>Student Registration</div><div class="step"><span class="n">2</span>Instructions</div><div class="step"><span class="n">3</span>Quiz</div></div>
+      <div class="card">
+        <div class="eyebrow">Student Registration</div>
+        <h2 data-config="quizTitle">CO1 Quiz Assessment</h2>
+        <div class="course-chip" data-config="courseName">UBA10 – Numerical Methods</div> <div class="course-chip" data-config="sessionLabel">MS2 · SEP – DEC 2026</div>
+        <div class="facts">
+          <div class="fact"><b id="factQuestions">–</b><span>Questions</span></div>
+          <div class="fact"><b id="factDuration">–</b><span>Duration</span></div>
+          <div class="fact"><b id="factPass">–</b><span>Pass mark</span></div>
+          <div class="fact"><b id="factViolations">–</b><span>Max violations</span></div>
+        </div>
+        <form id="regForm" class="form-grid" novalidate autocomplete="off">
+          <label class="span-2"><span>Student Name <span class="req">*</span></span>
+            <input id="studentName" class="form-control" maxlength="80" placeholder="e.g. Priya R" autofocus>
+            <span id="studentNameErr" class="field-error"></span>
+          </label>
+          <label class="span-2"><span>Register Number <span class="req">*</span></span>
+            <input id="regNo" class="form-control" maxlength="20" placeholder="e.g. 23MATH001" style="text-transform:uppercase">
+            <span id="regNoHint" class="field-hint"></span>
+            <span id="regNoErr" class="field-error"></span>
+          </label>
+          <label><span>Faculty Name <span class="req">*</span></span>
+            <input id="facultyName" class="form-control" maxlength="80" placeholder="e.g. Dr. K. Sudar Mozhi">
+            <span id="facultyNameErr" class="field-error"></span>
+          </label>
+          <label><span>Course Code <span class="req">*</span></span>
+            <input id="courseCode" class="form-control" maxlength="20" placeholder="e.g. MAT101" style="text-transform:uppercase">
+            <span id="courseCodeErr" class="field-error"></span>
+          </label>
+          <div class="span-2 btn-row end">
+            <a class="btn btn-secondary" href="index.html">Cancel</a>
+            <button type="submit" class="btn btn-primary btn-lg">Start Quiz →</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- STEP 2: INSTRUCTIONS -->
+    <section id="instStep" hidden>
+      <div class="steps"><div class="step done"><span class="n">✓</span>Student Registration</div><div class="step active"><span class="n">2</span>Instructions</div><div class="step"><span class="n">3</span>Quiz</div></div>
+      <div class="card instructions">
+        <div class="confirm-box">
+          <div><span>Student</span><b id="confirmName"></b></div>
+          <div><span>Register No.</span><b id="confirmReg"></b></div>
+          <div><span>Faculty</span><b id="confirmFaculty"></b></div>
+          <div><span>Course Code</span><b id="confirmCourse"></b></div>
+        </div>
+        <h2>Quiz Instructions</h2>
+        <p class="muted">The quiz has <b id="instQuestions">–</b> multiple-choice questions and must be completed in <b id="instDuration">–</b> minutes. It is submitted automatically when the time is over.</p>
+        <ol>
+          <li>Do not open another browser tab.</li>
+          <li>Do not switch to another application or window.</li>
+          <li>Do not minimize the browser.</li>
+          <li>Do not use browser extensions or external assistance.</li>
+          <li>Do not use search engines or other websites.</li>
+          <li>Do not use AI tools or other external resources.</li>
+          <li>Stay on the quiz screen until submission.</li>
+          <li id="instFullscreen" hidden>The quiz runs in <b>full-screen mode</b>. Leaving full-screen mode is recorded as a violation.</li>
+          <li>Copy, paste, right-click and developer-tool shortcuts are disabled.</li>
+          <li id="instNoBack" hidden>You <b>cannot return</b> to a previous question once you move forward.</li>
+          <li>If the page is refreshed accidentally, your answers and timer are restored. Leaving the page for a long time is recorded as a violation.</li>
+          <li class="key">Any suspicious screen/tab switching will be recorded as a malpractice violation.</li>
+          <li class="key">Maximum <span id="instViolations">2</span> violations are allowed.</li>
+          <li class="key">On the <span id="instTerminate">3rd</span> violation, the quiz will automatically terminate and the result will be marked as MALPRACTICE.</li>
+        </ol>
+        <div class="ext-warning" role="alert">
+          <span aria-hidden="true">⚠</span>
+          <span>Do not use browser extensions, AI assistants, search tools, or any external resources during the assessment.</span>
+        </div>
+        <div class="agree-box">
+          <label class="check"><input type="checkbox" id="agree"> I have read and understood the instructions.</label>
+        </div>
+        <div class="btn-row end">
+          <button type="button" id="btnBack" class="btn btn-secondary">← Edit Details</button>
+          <button type="button" id="btnBegin" class="btn btn-primary btn-lg" disabled>I Agree — Begin Quiz</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="blockStep" hidden></section>
+  </main>
+  <footer class="portal-footer">
+    © SIMATS Engineering · Department of Pure and Applied Mathematics · CO1 Online Assessment Portal
+  </footer>
+  <script src="js/site-config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/questions.js"></script>
+  <script src="js/malpractice.js"></script>
+  <script src="js/results.js"></script>
+  <script src="js/student.js"></script>
+  <script>
+    /* Shown only if the page was opened without its js/css folders (e.g. straight from a zip or WhatsApp) */
+    if (!window.CO1) document.body.innerHTML = '<div style="font-family:Arial,sans-serif;max-width:640px;margin:60px auto;padding:24px 28px;border:2px solid #c0392b;border-radius:12px;line-height:1.6"><h2 style="color:#c0392b;margin-top:0">Quiz files not found</h2><p>This page was opened <b>without its supporting files</b>, so the quiz cannot start.</p><ol><li>If you received a <b>zip file</b>: right-click it → <b>Extract All</b>, then open <b>index.html</b> from the extracted <b>quiz-app</b> folder (do not open it from inside the zip).</li><li>If you received a <b>link</b>: open the link in Google Chrome instead of a downloaded file.</li></ol></div>';
+  </script>
+</body>
+</html>

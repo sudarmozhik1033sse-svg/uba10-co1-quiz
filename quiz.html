@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quiz · CO1 Quiz Portal · SIMATS Engineering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="portal-header">
+    <div class="inner">
+      <div class="brand-logo">
+        <img class="inst-logo" src="img/simats-logo.png" alt="SIMATS Engineering" onload="this.parentNode.classList.add('has-logo')" onerror="this.remove()">
+        <div class="emblem" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><path fill="#1f3864" d="M16 4 1 11l15 7 12-5.6V20h2v-8.6L31 11z"/><path fill="#8b1e3f" d="M7 15.2V21c0 2.5 4 4.5 9 4.5s9-2 9-4.5v-5.8l-9 4.2z"/><circle cx="29" cy="22" r="1.6" fill="#c9a227"/></svg></div>
+      </div>
+      <div class="brand-text">
+        <div class="inst" data-config="institution">SIMATS Engineering</div>
+        <div class="dept" data-config="department">Department of Pure and Applied Mathematics</div>
+      </div>
+      <div class="spacer"></div>
+      <span class="small" style="opacity:.85">Secure Assessment Mode</span>
+    </div>
+  </header>
+  <div id="storageError" class="storage-error" hidden></div>
+  <section class="exam-bar">
+    <div class="inner">
+      <div>
+        <h1 class="exam-title"><span id="examTitle">CO1 QUIZ ASSESSMENT</span> <small class="exam-course" data-config="courseName">UBA10 – Numerical Methods</small> <small class="exam-course" data-config="sessionLabel">MS2 · SEP – DEC 2026</small></h1>
+        <div class="exam-info">
+          <span>Student Name: <b id="infoName">–</b></span>
+          <span>Register Number: <b id="infoReg">–</b></span>
+          <span>Faculty: <b id="infoFaculty">–</b></span>
+          <span>Course Code: <b id="infoCourse">–</b></span>
+        </div>
+      </div>
+      <div id="violationPill" class="violation-pill" title="Leaving the quiz screen is recorded as a violation">
+        Malpractice Violations: <span id="violationCount">0 / 2</span>
+      </div>
+      <div id="timerBox" class="timer-box" role="timer" aria-live="off">
+        <div class="lbl">Time Remaining</div>
+        <div class="t" id="timer">30:00</div>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress" aria-hidden="true"><div id="progressBar" class="progress-bar"></div></div>
+      <span id="progressText">0 answered</span>
+    </div>
+  </section>
+
+  <main class="page" id="quizApp">
+    <div class="exam-wrap">
+      <div id="examLayout" class="exam-layout">
+        <article class="card question-card">
+          <div id="questionCard"><p class="muted">Loading questions…</p></div>
+          <div class="q-actions">
+            <button type="button" id="btnClear" class="btn btn-secondary">Clear Response</button>
+            <div class="grp">
+              <button type="button" id="btnPrev" class="btn btn-secondary">← Previous</button>
+              <button type="button" id="btnNext" class="btn btn-primary">Next →</button>
+              <button type="button" id="btnSubmit2" class="btn btn-success" hidden>Submit Quiz</button>
+            </div>
+          </div>
+          <div id="navHint" class="nav-hint" hidden>Backward navigation is disabled for this quiz.</div>
+        </article>
+        <aside class="card side-panel">
+          <h4>Question Navigation</h4>
+          <div id="palette" class="palette"></div>
+          <div class="legend">
+            <div><i class="lg-ans"></i>Answered <b id="cntAnswered">0</b></div>
+            <div><i class="lg-not"></i>Not answered <b id="cntNotAnswered">0</b></div>
+            <div><i class="lg-nv"></i>Not visited <b id="cntNotVisited">0</b></div>
+          </div>
+          <button type="button" id="btnSubmit" class="btn btn-success btn-lg">Submit Quiz</button>
+          <p class="small muted mt-2">Keyboard: A–D to choose, ← → to move.</p>
+        </aside>
+      </div>
+      <div id="gate" class="gate" hidden></div>
+    </div>
+  </main>
+  <footer class="portal-footer">
+    © SIMATS Engineering · Department of Pure and Applied Mathematics · CO1 Online Assessment Portal
+  </footer>
+  <script src="js/site-config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/questions.js"></script>
+  <script src="js/malpractice.js"></script>
+  <script src="js/results.js"></script>
+  <script src="js/quiz.js"></script>
+  <script>
+    /* Shown only if the page was opened without its js/css folders (e.g. straight from a zip or WhatsApp) */
+    if (!window.CO1) document.body.innerHTML = '<div style="font-family:Arial,sans-serif;max-width:640px;margin:60px auto;padding:24px 28px;border:2px solid #c0392b;border-radius:12px;line-height:1.6"><h2 style="color:#c0392b;margin-top:0">Quiz files not found</h2><p>This page was opened <b>without its supporting files</b>, so the quiz cannot start.</p><ol><li>If you received a <b>zip file</b>: right-click it → <b>Extract All</b>, then open <b>index.html</b> from the extracted <b>quiz-app</b> folder (do not open it from inside the zip).</li><li>If you received a <b>link</b>: open the link in Google Chrome instead of a downloaded file.</li></ol></div>';
+  </script>
+</body>
+</html>

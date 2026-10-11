@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Faculty Dashboard · CO1 Quiz Portal · SIMATS Engineering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="portal-header">
+    <div class="inner">
+      <div class="brand-logo">
+        <img class="inst-logo" src="img/simats-logo.png" alt="SIMATS Engineering" onload="this.parentNode.classList.add('has-logo')" onerror="this.remove()">
+        <div class="emblem" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><path fill="#1f3864" d="M16 4 1 11l15 7 12-5.6V20h2v-8.6L31 11z"/><path fill="#8b1e3f" d="M7 15.2V21c0 2.5 4 4.5 9 4.5s9-2 9-4.5v-5.8l-9 4.2z"/><circle cx="29" cy="22" r="1.6" fill="#c9a227"/></svg></div>
+      </div>
+      <div class="brand-text">
+        <div class="inst" data-config="institution">SIMATS Engineering</div>
+        <div class="dept" data-config="department">Department of Pure and Applied Mathematics</div>
+      </div>
+      <div class="spacer"></div>
+      <a class="header-link" href="index.html">Home</a>
+      <button type="button" id="btnLogout" class="header-link" hidden>Log out</button>
+    </div>
+  </header>
+    <main class="page" id="facultyApp">
+    <!-- LOGIN -->
+    <section id="loginView">
+      <div class="card login-card">
+        <div class="eyebrow">Faculty Access</div>
+        <h2>Faculty Dashboard</h2>
+        <p class="muted small">Enter the faculty password to manage the quiz and view results.</p>
+        <form id="loginForm" novalidate>
+          <label>Faculty Password<input id="pin" type="password" class="form-control" autocomplete="current-password" autofocus><span id="pinErr" class="field-error"></span></label>
+          <div class="btn-row"><button class="btn btn-primary" style="width:100%" type="submit">Log in</button></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- APP -->
+    <section id="appView" hidden>
+      <div class="card-head">
+        <div><div class="eyebrow">Faculty Dashboard · <span data-config="courseName">UBA10 – Numerical Methods</span> · <span data-config="sessionLabel">MS2 · SEP – DEC 2026</span></div><h1 data-config="quizTitle" style="margin:0">CO1 Quiz Assessment</h1></div>
+        <div class="small muted" id="cfgSummary"></div>
+      </div>
+      <nav class="tabs" role="tablist">
+        <button class="tab-btn active" data-tab="dashboard" type="button">Dashboard &amp; Results</button>
+        <button class="tab-btn" data-tab="malpractice" type="button">Malpractice Log</button>
+        <button class="tab-btn" data-tab="bank" type="button">Question Bank</button>
+        <button class="tab-btn" data-tab="config" type="button">Configuration</button>
+        <button class="tab-btn" data-tab="session" type="button">Session Control</button>
+      </nav>
+
+      <!-- DASHBOARD -->
+      <div class="tab-pane" id="tab-dashboard">
+        <div class="stat-grid">
+          <div class="stat"><div class="lbl">Total Students</div><div class="val" id="statTotal">0</div><div class="sub">all attempts</div></div>
+          <div class="stat s-completed"><div class="lbl">Completed</div><div class="val" id="statCompleted">0</div><div class="sub">submitted normally / time-up</div></div>
+          <div class="stat s-passed"><div class="lbl">Passed</div><div class="val" id="statPassed">0</div><div class="sub" id="statPassRate"></div></div>
+          <div class="stat s-failed"><div class="lbl">Failed</div><div class="val" id="statFailed">0</div><div class="sub">below pass mark</div></div>
+          <div class="stat s-mal"><div class="lbl">Malpractice</div><div class="val" id="statMal">0</div><div class="sub">terminated</div></div>
+          <div class="stat s-avg"><div class="lbl">Average Score</div><div class="val" id="statAvg">—</div><div class="sub" id="statAvgMarks"></div></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <h3>Student-wise Results</h3>
+            <div class="toolbar">
+              <label class="check small" style="margin-right:6px"><input type="checkbox" id="exportFiltered" checked> Export filtered rows only</label>
+              <button id="btnExcel" class="btn btn-success" type="button">⬇ Download Results as Excel</button>
+              <button id="btnCsv" class="btn btn-secondary" type="button">Export CSV</button>
+              <button id="btnRefresh" class="btn btn-secondary" type="button">↻ Refresh</button>
+              <button id="btnClear" class="btn btn-ghost-danger" type="button">Clear Results</button>
+            </div>
+          </div>
+          <div id="sourceBar" class="source-bar"></div>
+          <div class="filters">
+            <select id="fFaculty" class="form-control" title="Faculty"><option value="">All faculty</option></select>
+            <input id="fSearch" class="form-control" placeholder="Search student name or register number…">
+            <select id="fCourse" class="form-control"><option value="">All courses</option></select>
+            <select id="fStatus" class="form-control">
+              <option value="">All statuses</option><option value="COMPLETED">Completed</option><option value="MALPRACTICE">Malpractice</option>
+              <option value="PASS">Passed</option><option value="FAIL">Failed</option>
+            </select>
+            <input id="fDate" type="date" class="form-control" title="Quiz date">
+            <button id="fReset" class="btn btn-secondary" type="button">Reset</button>
+          </div>
+          <p class="small muted" id="resultCount"></p>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>#</th><th>Student Name</th><th>Register No.</th><th>Course</th><th>Date</th><th>Marks</th><th>%</th><th>Result</th><th>Violations</th><th>Status</th><th></th></tr></thead>
+              <tbody id="resultsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- MALPRACTICE LOG -->
+      <div class="tab-pane" id="tab-malpractice" hidden>
+        <div class="card">
+          <div class="card-head"><h3>Malpractice Log</h3><span class="small muted" id="vlogCount"></span></div>
+          <p class="small muted">Every recorded violation with its time, type, the question on screen and the time remaining. Included in the Excel export (sheet “Violation Log”).</p>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>Student</th><th>Violation</th><th>Date / Time</th><th>Type</th><th>Question</th><th>Time Remaining</th><th>Outcome</th></tr></thead>
+              <tbody id="vlogBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUESTION BANK -->
+      <div class="tab-pane" id="tab-bank" hidden>
+        <div class="card">
+          <div class="card-head">
+            <div><h3>Question Bank</h3><div class="small muted" id="bankSummary"></div></div>
+            <div class="toolbar">
+              <button id="btnAddQ" class="btn btn-primary" type="button">+ Add Question</button>
+              <button id="btnImport" class="btn btn-success" type="button">Import Excel</button>
+              <button id="btnTemplate" class="btn btn-secondary" type="button">Download Question Template</button>
+            </div>
+          </div>
+          <input type="file" id="importFile" accept=".xlsx,.xls,.csv" hidden>
+          <input type="file" id="jsonFile" accept=".json,application/json" hidden>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>#</th><th>Question</th><th>Options</th><th>Answer</th><th>Marks</th><th></th></tr></thead>
+              <tbody id="bankBody"></tbody>
+            </table>
+          </div>
+          <div class="btn-row">
+            <button id="btnExportJson" class="btn btn-secondary btn-sm" type="button">Export bank (JSON backup)</button>
+            <button id="btnImportJson" class="btn btn-secondary btn-sm" type="button">Import JSON</button>
+            <button id="btnResetBank" class="btn btn-ghost-danger btn-sm" type="button">Reset to default bank</button>
+          </div>
+          <p class="small muted mt-2">Changes apply to <b>new</b> attempts. An attempt already in progress keeps the questions it was given.</p>
+        </div>
+      </div>
+
+      <!-- CONFIGURATION -->
+      <div class="tab-pane" id="tab-config" hidden>
+        <form id="configForm" class="card" novalidate>
+          <div class="card-head"><h3>Quiz Configuration</h3>
+            <div class="toolbar"><button type="button" id="btnResetConfig" class="btn btn-secondary">Restore Defaults</button><button type="submit" class="btn btn-primary">Save Configuration</button></div>
+          </div>
+          <div class="cfg-grid">
+            <div>
+              <div class="section-label">Quiz details</div>
+              <div class="form-grid">
+                <label class="span-2">Quiz Title<input class="form-control" name="quizTitle"></label>
+                <label>Session<input class="form-control" name="sessionLabel" placeholder="MS2 · SEP – DEC 2026"></label>
+                <label>Course Name<input class="form-control" name="courseName" placeholder="UBA10 – Numerical Methods"></label>
+                <label>Course Code<input class="form-control" name="courseCode" placeholder="MAT101"><span class="field-hint">Pre-fills the student form</span></label>
+                <label>Faculty Name<input class="form-control" name="facultyName" placeholder="Dr. XYZ"><span class="field-hint">Pre-fills the student form</span></label>
+                <label>Institution<input class="form-control" name="institution" placeholder=""></label>
+                <label>Department<input class="form-control" name="department" placeholder=""></label>
+              </div>
+              <div class="section-label">Timing &amp; scoring</div>
+              <div class="form-grid">
+                <label>Duration (minutes)<input class="form-control" type="number" name="durationMinutes" min="1" max="300" step="1"></label>
+                <label>Number of Questions<input class="form-control" type="number" name="questionsPerAttempt" min="0" max="500" step="1"><span class="field-hint">0 = all questions in the bank</span></label>
+                <label>Marks Mode<select class="form-control" name="marksMode"><option value="perQuestion">Per question (from bank)</option><option value="uniform">Same marks for every question</option></select></label>
+                <label>Marks per Question<input class="form-control" type="number" name="marksPerQuestion" min="0.25" max="100" step="0.25"><span class="field-hint">Used in “Same marks” mode</span></label>
+                <label>Pass Percentage<input class="form-control" type="number" name="passPercentage" min="0" max="100" step="1"></label>
+                <label>Low-time warning (minutes)<input class="form-control" type="number" name="warnAtMinutes" min="0" max="60" step="1"></label>
+              </div>
+              <div class="section-label">Malpractice</div>
+              <div class="form-grid">
+                <label>Maximum Violations<input class="form-control" type="number" name="maxViolations" min="0" max="10" step="1"><span class="field-hint">Next violation = MALPRACTICE (default 2 → 3rd terminates)</span></label>
+                <label>Refresh grace (seconds)<input class="form-control" type="number" name="reloadGraceSeconds" min="5" max="600" step="1"><span class="field-hint">Absence longer than this = violation</span></label>
+                <label>Duplicate-event window (ms)<input class="form-control" type="number" name="violationCooldownMs" min="500" max="10000" step="100"><span class="field-hint">Events within this window = one violation</span></label>
+              </div>
+            </div>
+            <div>
+              <div class="section-label">Behaviour</div>
+              <label class="switch-row"><span>Randomize questions<small>Each student gets a different question order</small></span><input type="checkbox" name="randomizeQuestions"></label>
+              <label class="switch-row"><span>Randomize options<small>A–D order shuffled per student (answer key stays correct)</small></span><input type="checkbox" name="randomizeOptions"></label>
+              <label class="switch-row"><span>Allow backward navigation<small>Students may return to earlier questions</small></span><input type="checkbox" name="allowBackNavigation"></label>
+              <label class="switch-row"><span>Show correct answers on result page<small>Answer review after submission</small></span><input type="checkbox" name="showCorrectAnswers"></label>
+              <label class="switch-row"><span>Require full-screen mode<small>Exiting full screen counts as a violation</small></span><input type="checkbox" name="requireFullscreen"></label>
+              <label class="switch-row"><span>Block copy / paste / right-click<small>Also blocks common developer-tool shortcuts</small></span><input type="checkbox" name="blockCopyPaste"></label>
+              <label class="switch-row"><span>Lock browser after an attempt<small>Lab mode — one attempt per computer until you reset it</small></span><input type="checkbox" name="lockBrowserAfterAttempt"></label>
+              <label class="switch-row"><span>Enforce course code<small>Students must enter exactly the configured course code</small></span><input type="checkbox" name="enforceCourseCode"></label>
+              <div class="section-label">Register number validation</div>
+              <div class="form-grid">
+                <label>Pattern (regular expression)<input class="form-control" name="regNoPattern" placeholder=""><span class="field-hint">Default: ^[A-Za-z0-9]{5,15}$</span></label>
+                <label>Hint shown to students<input class="form-control" name="regNoHint" placeholder=""></label>
+              </div>
+              <div class="section-label">Optional: central results (Google Sheet)</div>
+              <label>Google Apps Script Web App URL<input class="form-control" name="remoteEndpoint" placeholder="https://script.google.com/macros/s/…/exec"><span class="field-hint">Leave blank for local-only. See backend/google-apps-script.gs</span></label>
+            </div>
+          </div>
+        </form>
+        <form id="pinForm" class="card" novalidate>
+          <h3>Change Faculty Password</h3>
+          <div class="form-grid">
+            <label>New Password<input id="newPin" type="password" class="form-control" autocomplete="new-password" minlength="6"></label>
+            <label>Confirm Password<input id="confirmPin" type="password" class="form-control" autocomplete="new-password"></label>
+          </div>
+          <div class="btn-row"><button class="btn btn-primary" type="submit">Update Password</button></div>
+          <p class="small muted mt-2">Changing the password here affects this browser only. The password is stored as a hash, never as plain text.</p>
+        </form>
+      </div>
+
+      <!-- SESSION CONTROL -->
+      <div class="tab-pane" id="tab-session" hidden>
+        <div class="card">
+          <h3>Active Quiz Session (this browser)</h3>
+          <div id="activeInfo"></div>
+          <div class="btn-row"><button id="btnResetSession" class="btn btn-danger" type="button">Reset Active Session</button></div>
+        </div>
+        <div class="card">
+          <h3>Browser Attempt Lock</h3>
+          <p id="lockInfo"></p>
+          <div class="btn-row"><button id="btnClearLock" class="btn btn-primary" type="button">Reset Lock for Next Student</button></div>
+          <p class="small muted mt-2">To let a specific student re-attempt, delete their row in <b>Dashboard &amp; Results</b>, then reset the lock.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="portal-footer">
+    © SIMATS Engineering · Department of Pure and Applied Mathematics · CO1 Online Assessment Portal
+  </footer>
+  <script src="js/site-config.js"></script>
+  <script src="js/lib/xlsx.bundle.js"></script>
+  <!-- Fallback: load the same library from a CDN if js/lib was not copied -->
+  <script>window.XLSX || document.write('<script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"><\/script>');</script>
+  <script src="js/app.js"></script>
+  <script src="js/questions.js"></script>
+  <script src="js/malpractice.js"></script>
+  <script src="js/results.js"></script>
+  <script src="js/excel.js"></script>
+  <script src="js/faculty.js"></script>
+  <script>
+    /* Shown only if the page was opened without its js/css folders (e.g. straight from a zip or WhatsApp) */
+    if (!window.CO1) document.body.innerHTML = '<div style="font-family:Arial,sans-serif;max-width:640px;margin:60px auto;padding:24px 28px;border:2px solid #c0392b;border-radius:12px;line-height:1.6"><h2 style="color:#c0392b;margin-top:0">Quiz files not found</h2><p>This page was opened <b>without its supporting files</b>, so the quiz cannot start.</p><ol><li>If you received a <b>zip file</b>: right-click it → <b>Extract All</b>, then open <b>index.html</b> from the extracted <b>quiz-app</b> folder (do not open it from inside the zip).</li><li>If you received a <b>link</b>: open the link in Google Chrome instead of a downloaded file.</li></ol></div>';
+  </script>
+</body>
+</html>
